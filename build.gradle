@@ -1,0 +1,56 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.6.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+        maven {
+            url 'https://mvnrepository.com/artifact/postgresql/postgresql'
+        }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath group: 'org.postgresql', name: 'postgresql', version: '9.4-1200-jdbc41'
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+    maven {
+        url 'https://mvnrepository.com/artifact/postgresql/postgresql'
+    }
+}
+
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-data-rest')
+	compile('org.springframework.boot:spring-boot-starter-security')
+
+//    [
+//        "org.springframework.boot:spring-boot-starter-data-rest",
+//        "org.springframework.boot:spring-boot-starter-security",
+//        "org.springframework.boot:spring-boot-starter-data-jpa",
+//    ].each { dep ->
+//        compile(dep) {
+//            // avoiding multiple logs
+//            exclude module: "spring-boot-starter-logging"
+//            exclude module: "logback-classic"
+//        }
+//    }
+
+    compile (group: 'org.postgresql', name: 'postgresql', version: '9.4-1200-jdbc41') {
+        //excluding slf4j instead of logback
+        exclude module: "slf4j-simple"
+    }
+
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('org.springframework.security:spring-security-test')
+}
